@@ -1,7 +1,8 @@
-import { useCallback, useState } from "react";
+import { useState } from "react"
 
-export default function Login(){
-  
+export default function Signup(){
+
+
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   //just check if token exist on home load
@@ -10,26 +11,21 @@ export default function Login(){
     setUsername(e.target.value)
   }
 
-  const handlePassword = useCallback((e) =>{
+  const handlePassword = (e) =>{
     setPassword(e.target.value)
-  },[])
+  }
 
-  const handleLoginClick = () =>{
+  const handleSignup = () =>{
+
     
-    
-
-    //call log in api
-
-    console.log("Username: ", username);
-
-    let loginURL = "http://localhost:3001/api/login"
+    let signupURL = "http://localhost:3001/api/signup"
 
     let formData = new FormData()
     formData.append('username', username)
     formData.append('password', password)
 
 
-    fetch(loginURL,{
+    fetch(signupURL,{
       method: 'POST',
       headers: new Headers(),
       body: formData
@@ -50,7 +46,8 @@ export default function Login(){
     }).catch((err) => {
       console.log("An error has occured: ", err);
     })
-
+    
+    //call log in api
   }
 
 
@@ -61,16 +58,15 @@ export default function Login(){
       <input
           type='text'
           placeholder="Username"
-          value={username}
           onChange={handleUsername}
       />
       <input
           type='password'
           placeholder='Password'
-          value={password}
           onChange={handlePassword}
       />
-      <button onClick={handleLoginClick}>Log in</button>
+      <button onClick={handleSignup}>Sign up</button>
+    
     </>
   )
 }

@@ -11,12 +11,14 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <div>
+          <h1>Tidy</h1>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="leaderboard" element={<Leaderboard />} />
             <Route path="profile" element={<Profile />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
+          
           <nav>
             <ul>
               <li><Link to="/">Home</Link></li>

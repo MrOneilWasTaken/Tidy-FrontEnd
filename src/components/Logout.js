@@ -1,8 +1,10 @@
-export default function Logout(props){
+export default function Logout(){
 
 
   const handleLogoutClick= (e) =>{
-    console.log("Logout clicked");
+    localStorage.removeItem('myLoginToken')
+    window.location.reload(false);
+
   }
 
   return(
