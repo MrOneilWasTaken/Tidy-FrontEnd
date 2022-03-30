@@ -10,7 +10,7 @@ export default function Home() {
   const [dayID, setDayID] = useState(0);
   const [show, setShow] = useState(false);
 
-  //const [auth, setAuth] = useState(false)
+  //const [user, setUser] = useState(0)
 
   const [newTask, setNewTask] = useState('');
   const [tasks, setTasks] = useState([])
@@ -19,8 +19,9 @@ export default function Home() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const checkDB = () =>{
+  const checkUser = () =>{
     console.log("DB CHECKED");
+
   }
 
   const onNewTaskChange = useCallback((e) => {
@@ -72,7 +73,7 @@ export default function Home() {
   },[tasks])
 
   useEffect(() => {
-    checkDB()
+    checkUser()
     console.log('tasks', tasks);
   }, [tasks])
 
@@ -127,6 +128,7 @@ export default function Home() {
   
           <Button id = "1" variant="primary" onClick={handleClick}>+</Button>
         
+          
           <ul>
             {tasks.filter(task => task.dayid === '1').map((task) => (
               <li key={task.id} className={task.done ? 'doneLI' : ''}>

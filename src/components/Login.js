@@ -15,14 +15,9 @@ export default function Login(){
   },[])
 
   const handleLoginClick = () =>{
-    
-    
-
     //call log in api
-
-    console.log("Username: ", username);
-
     let loginURL = "http://localhost:3001/api/login"
+
 
     let formData = new FormData()
     formData.append('username', username)
@@ -44,6 +39,7 @@ export default function Login(){
 
       if ("token" in data){
         localStorage.setItem('myLoginToken', data.token)
+        localStorage.setItem('userID', data.userID)
       }
       window.location.reload(false);
 

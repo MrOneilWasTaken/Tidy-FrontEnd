@@ -40,6 +40,7 @@ export default function Signup(){
 
       if ("token" in data){
         localStorage.setItem('myLoginToken', data.token)
+        localStorage.setItem('userID', data.token)
       }
       window.location.reload(false);
 
