@@ -4,7 +4,6 @@ export default function Login(){
   
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  //just check if token exist on home load
 
   const handleUsername = (e) =>{
     setUsername(e.target.value)
@@ -18,11 +17,9 @@ export default function Login(){
     //call log in api
     let loginURL = "http://localhost:3001/api/login"
 
-
     let formData = new FormData()
     formData.append('username', username)
     formData.append('password', password)
-
 
     fetch(loginURL,{
       method: 'POST',
@@ -40,6 +37,7 @@ export default function Login(){
       if ("token" in data){
         localStorage.setItem('myLoginToken', data.token)
         localStorage.setItem('userID', data.userID)
+        localStorage.setItem('username', data.username)
       }
       window.location.reload(false);
 
@@ -50,7 +48,6 @@ export default function Login(){
   }
 
   const handleSignup = () =>{
-
     
     let signupURL = "http://localhost:3001/api/signup"
 
@@ -74,7 +71,8 @@ export default function Login(){
 
       if ("token" in data){
         localStorage.setItem('myLoginToken', data.token)
-        localStorage.setItem('userID', data.token)
+        localStorage.setItem('userID', data.userID)
+        localStorage.setItem('username', data.username)
       }
       window.location.reload(false);
 
@@ -84,9 +82,6 @@ export default function Login(){
     
     //call log in api
   }
-
-
-
 
   return(
     <>

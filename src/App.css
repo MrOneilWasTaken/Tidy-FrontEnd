@@ -84,12 +84,24 @@ button:active{
   padding-right: 4rem;
 }
 
-ul{
+/* Colours for NAV */
+nav ul{
   list-style-type: none;
   margin:0;
   padding:0;
   overflow:hidden;
   background-color: rgb(46, 46, 46);
+  box-shadow: rgba(3, 8, 20, 0.1) 0px 0.15rem 0.5rem, rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
+}
+
+/* Colours for Task List */
+ul{
+  list-style-type: none;
+  font-weight: bold;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  background-color: rgb(165, 165, 165);
   box-shadow: rgba(3, 8, 20, 0.1) 0px 0.15rem 0.5rem, rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
 }
 
