@@ -49,6 +49,43 @@ export default function Login(){
 
   }
 
+  const handleSignup = () =>{
+
+    
+    let signupURL = "http://localhost:3001/api/signup"
+
+    let formData = new FormData()
+    formData.append('username', username)
+    formData.append('password', password)
+
+
+    fetch(signupURL,{
+      method: 'POST',
+      headers: new Headers(),
+      body: formData
+    }).then((res) => {
+      if (res.status === 200){
+        return res.json()
+      }else{
+        throw Error(res.statusText)
+      }
+    }).then((data) => {
+      console.log(data);
+
+      if ("token" in data){
+        localStorage.setItem('myLoginToken', data.token)
+        localStorage.setItem('userID', data.token)
+      }
+      window.location.reload(false);
+
+    }).catch((err) => {
+      console.log("An error has occured: ", err);
+    })
+    
+    //call log in api
+  }
+
+
 
 
   return(
@@ -66,7 +103,9 @@ export default function Login(){
           value={password}
           onChange={handlePassword}
       />
+      <br></br>
       <button onClick={handleLoginClick}>Log in</button>
+      <button onClick={handleSignup}>Sign up</button>
     </>
   )
 }

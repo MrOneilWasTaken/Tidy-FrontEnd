@@ -9,8 +9,8 @@ export default function Logout(){
   }
 
   return(
-    <div>
+    <>
       <button onClick={handleLogoutClick}>Logout</button>
-    </div>
+    </>
   )
 }

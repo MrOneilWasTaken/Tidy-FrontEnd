@@ -11,7 +11,6 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <div>
-          <h1>Tidy</h1>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="leaderboard" element={<Leaderboard />} />
@@ -19,7 +18,7 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
           
-          <nav>
+          <nav id = "">
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to="leaderboard">Leaderboard</Link></li>

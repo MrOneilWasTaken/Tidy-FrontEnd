@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import Login from "../components/Login";
 import Logout from "../components/Logout";
-import Signup from "../components/Signup";
+// import Signup from "../components/Signup(DECIPRICATED)";
 
 export default function Home() {
 
@@ -59,14 +59,15 @@ export default function Home() {
   
   },[tasks,newTask,dayID])
 
-  // const onTaskChecked = useCallback((task,index) => (e) => {
-  //   const newTasks = [...tasks]
-  //   newTasks.splice(index, 1,{
-  //     ...task,
-  //     done: !task.done
-  //   })
-  //   setTasks(newTasks)
-  // },[tasks])
+  const onTaskChecked = useCallback((task,index) => (e) => {
+    const newTasks = [...tasks]
+    newTasks.splice(index, 1,{
+      ...task,
+      done: !task.done
+    })
+    setTasks(newTasks)
+  },[tasks])
+
 
   const removeTask = useCallback((task) => (e) => {
     setTasks(tasks.filter(otherTask => otherTask !== task))
@@ -114,24 +115,26 @@ export default function Home() {
           </form>
   
         </Modal>
-  
-        <h1>Hi User</h1>
+
+        <header>
+          <h1>Tidy</h1>
+          <h1>Hi User</h1>
+          <Logout/>
+        </header>
         
-        <Logout/>
         
         {/* <img src={ require('./images/image1.jpg') } /> */}
-        <h3>----------------------</h3>
-        <p>This is an app that allows you to order your time and be rewarded for it</p>
   
         <div>
-          <h2>Monday</h2>
-  
-          <Button id = "1" variant="primary" onClick={handleClick}>+</Button>
-        
-          
+          <div className="dayTitle">
+            <h2>Monday</h2>
+            <Button id = "1" variant="primary" onClick={handleClick}>+</Button>
+          </div>                   
           <ul>
-            {tasks.filter(task => task.dayid === '1').map((task) => (
+            {tasks.filter(task => task.dayid === '1').map((task, index) => (
               <li key={task.id} className={task.done ? 'doneLI' : ''}>
+                <button onClick={onTaskChecked(task,index)}>Check</button>
+
                 <span className={task.done ? 'done' : ''}>
                   {task.content}
                 </span>
@@ -140,12 +143,13 @@ export default function Home() {
             ))}
           </ul>
         </div>
-  
+
+        {/* Tuesday List */}
         <div>
-          <h2>Tuesday</h2>
-  
-          <Button id = "2" variant="primary" onClick={handleClick}>+</Button>
-  
+          <div className="dayTitle">
+            <h2>Tuesday</h2>
+            <Button id = "2" variant="primary" onClick={handleClick}>+</Button>
+          </div> 
           <ul>
             {tasks.filter(task => task.dayid === '2').map((task) => (
               <li key={task.id} className={task.done ? 'doneLI' : ''}>
@@ -157,12 +161,13 @@ export default function Home() {
             ))}
           </ul>
         </div>
-  
+
+        {/* Wednesday List */}
         <div>
-          <h2>Wednesday</h2>
-  
-          <Button id = "3" variant="primary" onClick={handleClick}>+</Button>
-  
+          <div className="dayTitle">
+            <h2>Wednesday</h2>
+            <Button id = "3" variant="primary" onClick={handleClick}>+</Button>
+          </div>  
           <ul>
             {tasks.filter(task => task.dayid === '3').map((task) => (
               <li key={task.id} className={task.done ? 'doneLI' : ''}>
@@ -175,11 +180,12 @@ export default function Home() {
           </ul>
         </div>
   
+        {/* Thursday List */}
         <div>
-          <h2>Thursday</h2>
-  
-          <Button id = "4" variant="primary" onClick={handleClick}>+</Button>
-  
+          <div className="dayTitle">
+            <h2>Thursday</h2>
+            <Button id = "4" variant="primary" onClick={handleClick}>+</Button>
+          </div>
           <ul>
             {tasks.filter(task => task.dayid === '4').map((task) => (
               <li key={task.id} className={task.done ? 'doneLI' : ''}>
@@ -191,12 +197,13 @@ export default function Home() {
             ))}
           </ul>
         </div>
-  
+
+        {/* Friday List */}
         <div>
-          <h2>Friday</h2>
-  
-          <Button id = "5" variant="primary" onClick={handleClick}>+</Button>
-  
+          <div className="dayTitle">
+            <h2>Friday</h2>
+            <Button id = "5" variant="primary" onClick={handleClick}>+</Button>
+          </div>
           <ul>
             {tasks.filter(task => task.dayid === '5').map((task) => (
               <li key={task.id} className={task.done ? 'doneLI' : ''}>
@@ -213,14 +220,13 @@ export default function Home() {
   }else{
     return(
       <>
-        <h1>You gotta log in pal</h1>
+        <h1>Welcome to Tidy</h1>
+        <h2>Please log in or create and account</h2>
         
         <Login/>
-        <Signup/>
+        {/* <Signup/> */}
         
         {/* <img src={ require('./images/image1.jpg') } /> */}
-        <h3>----------------------</h3>
-        <p>This is an app that allows you to order your time and be rewarded for it</p>
       </>
     )
   }
