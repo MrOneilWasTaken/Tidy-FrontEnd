@@ -7,27 +7,13 @@ import Logout from "../components/Logout";
 // import Signup from "../components/Signup(DECIPRICATED)";
 
 export default function Home() {
-
-  
-
-
-
   const [dayID, setDayID] = useState(0);
   const [show, setShow] = useState(false);
-
-  //const [user, setUser] = useState(0)
-
   const [newTask, setNewTask] = useState('');
   const [tasks, setTasks] = useState([])
 
-  
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  const checkUser = () =>{
-    console.log("DB CHECKED");
-
-  }
 
   const onNewTaskChange = useCallback((e) => {
     setNewTask(e.target.value)
@@ -39,9 +25,7 @@ export default function Home() {
     }else{
 
     handleClose();
-
     e.preventDefault();
-
     if (!newTask.trim())return;
 
     console.log("Form Submitted");
@@ -58,6 +42,8 @@ export default function Home() {
     ])
 
     setNewTask('')
+
+    console.log(tasks);
 
     SaveTasks()
   }
@@ -78,19 +64,103 @@ export default function Home() {
     setTasks(tasks.filter(otherTask => otherTask !== task))
   },[tasks])
 
-  useEffect(() => {
-    console.log('tasks', tasks);
-  }, [tasks])
-
-  useEffect(() => {
-    checkUser()
-  }, []);
-
- 
-
   const handleClick = (e) =>{
     handleShow();
     setDayID(e.target.id);
+  }
+
+  // useEffect(() => {
+  //   console.log('tasks', tasks);
+  // }, [tasks])
+
+  const addRetrievedTasks = useCallback((results) => {
+    console.log("Retrieved Tasks fire");
+    console.log(results);
+
+    console.log("Before: ",tasks);
+
+    results.forEach(task => {
+      // setTasks([
+      //   ...tasks,
+      console.log(
+        {
+          taskid: task.taskID,
+          userid : task.userID,
+          dayid: task.dayID, 
+          content: task.content,
+          done: task.done
+        });
+      // ])
+    });
+
+    
+
+    setNewTask('')
+
+    console.log("After: ",tasks);
+
+  }
+  
+  const RecieveTasks = () =>{
+    let userToken = "Bearer "
+    userToken = userToken + localStorage.getItem('myLoginToken')
+    const userID = localStorage.getItem('userID')
+
+    let recieveTaskURL = "http://localhost:3001/api/recievetasks"
+    recieveTaskURL = recieveTaskURL + "?userID=" + userID
+
+    const headers = new Headers()
+    headers.append("authorization", `${userToken}`)
+
+    fetch(recieveTaskURL, {
+      method: 'GET',
+      headers: headers,
+    }).then((res) => {
+      if (res.status === 200){
+        return res.json({Message: "Success"})
+      }else{
+        throw Error(res.statusText)
+      }
+    }).then((data) => {
+      const results = data.recievedTasks    
+      addRetrievedTasks(results)
+    }).catch((err) => {
+      console.log("An error has occured: ", err);
+    })
+    
+  }
+  // useEffect(() => {
+  //   RecieveTasks()
+  //   console.log(tasks);
+  // }, []);
+
+  const SaveTasks = () =>{
+    let userToken = "Bearer "
+    userToken = userToken + localStorage.getItem('myLoginToken')
+
+    const uploadTaskURL = "http://localhost:3001/api/addtask"
+
+    const headers = new Headers()
+    headers.append("authorization", `${userToken}`)
+    headers.append("Content-Type", "application/json")
+
+    fetch(uploadTaskURL, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(tasks),
+    }).then((res) => {
+      if (res.status === 200){
+        return res.json({Message: "Success"})
+      }else{
+        throw Error(res.statusText)
+      }
+    }).then((data) => {
+      console.log(data);
+    }).catch((err) => {
+      console.log("An error has occured: ", err);
+    })
+    
+
   }
 
   // Button Code for Save Tasks
@@ -141,8 +211,9 @@ export default function Home() {
   // }
 
   let username = localStorage.getItem('username')
-
+  
   if (localStorage.getItem('myLoginToken')){
+    
     return (
       <>
         <Modal show={show} onHide={handleClose}>
@@ -171,16 +242,11 @@ export default function Home() {
           </form>
   
         </Modal>
-
-        
         <header>
           <h1>Tidy</h1>
           <h1>Hi {username}</h1>
           <Logout/>
-        </header>
-        
-        
-        {/* <img src={ require('./images/image1.jpg') } /> */}
+        </header> 
   
         <div>
           <div className="dayTitle">
@@ -262,7 +328,7 @@ export default function Home() {
             <Button id = "5" variant="primary" onClick={handleClick}>+</Button>
           </div>
           <ul>
-            {tasks.filter(task => task.dayid === '5').map((task) => (
+            {tasks.filter(task => task.dayid === ('5' || 5)).map((task) => (
               <li key={task.id} className={task.done ? 'doneLI' : 'undoneLI'}>
                 <span className={task.done ? 'done' : ''}>
                   {task.content}
@@ -273,7 +339,7 @@ export default function Home() {
           </ul>
         </div>  
         <div>
-          <Button onClick={SaveTasks}>Save</Button>
+          <Button onClick={RecieveTasks}>Save</Button>
         </div>    
       </>
       )
