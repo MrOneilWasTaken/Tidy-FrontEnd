@@ -84,23 +84,24 @@ export default function Login(){
   }
 
   return(
-    <>
-    
+    <div className="headerChild">
       <input
-          type='text'
-          placeholder="Username"
-          value={username}
-          onChange={handleUsername}
+        className="input-search"
+        type='text'
+        placeholder="Username"
+        value={username}
+        onChange={handleUsername}
       />
       <input
-          type='password'
-          placeholder='Password'
-          value={password}
-          onChange={handlePassword}
+        className="input-search"
+        type='password'
+        placeholder='Password'
+        value={password}
+        onChange={handlePassword}
       />
       <br></br>
-      <button onClick={handleLoginClick}>Log in</button>
+      <button  onClick={handleLoginClick}>Log in</button>
       <button onClick={handleSignup}>Sign up</button>
-    </>
+    </div>
   )
 }

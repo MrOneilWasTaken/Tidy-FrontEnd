@@ -1,20 +1,79 @@
+/* CSS HEX */
+:root{
+  --black: #060505ff;
+  --fuzzy-wuzzy: #c7726fff;
+  --redwood: #9b5954ff;
+  --old-burgundy: #4b302fff;
+  --dark-sienna: #220909ff;
+
+  --oxford-blue: #0a122aff;
+  --maximum-green: #698f3fff;
+  --white: #fbfaf8ff;
+  --bone: #e7decdff;
+  --tuscan-red: #804e49ff;  
+}
+
+@media only screen and (min-width: 600px) {
+
+  html{
+    font-size: 18px;
+  }
+
+}
+
+h2{
+  margin-block-start: 0px;
+  margin-block-end:  0px;
+}
+
 html {
   text-align: center;
-  background-color: #4d4d4d;
+  background-color: var(--old-burgundy);
   color: rgb(88, 90, 92);
-  margin-left: 5rem;
-  margin-right: 5rem;
   font-weight: bold;
+
 }
 
 
+.App{
+  color: white;
+  background-color: var(--old-burgundy);
+}
+
 header{
   display: flex;
-  justify-content: space-between;
-  background-color: rgb(46, 46, 46);
+  justify-content: center;
+  background-color: var(--dark-sienna);
   color: white;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  /* padding-right: 10%;
+  padding-left: 10%; */
+}
+
+.headerChild{
+  flex-grow: 1;
+  margin-bottom: 0px;
+}
+
+.logoutButton{
+  padding: 0px;
+  border-radius: 15px;
+  width:  5rem;
+  height: auto;
+  margin-bottom: 0px;
+}
+
+.title{
+  flex-grow: 4;
+
+  margin-bottom: 0px;
+}
+
+.usersName{
+  flex-grow: 1;
+
+  margin-bottom: 0px;
 }
 
 .input-search{
@@ -28,7 +87,7 @@ header{
   padding: 10px;
   letter-spacing: 2px;
   outline: none;
-  color: #353535;
+  color: var(--white);
   font-weight: bold;
   font-size: 1.5rem;
   width: 80%;
@@ -37,10 +96,9 @@ header{
   border-bottom:1px solid rgba(255,255,255,.5);
   transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
   box-shadow: rgba(2, 8, 20, 0.1) 0px 0.35em 1.175em, rgba(2, 8, 20, 0.08) 0px 0.175em 0.5em;
-
 }
 
-button{
+.modal-input-search{
   padding: 0.5rem;
   margin-top: 10px;
   margin-left: 5px;
@@ -51,66 +109,73 @@ button{
   padding: 10px;
   letter-spacing: 2px;
   outline: none;
-  color: rgb(112, 112, 112);
+  color: var(--black);
   font-weight: bold;
   font-size: 1.5rem;
-  width: 30%;
+  width: 80%;
   border-radius: 0px;
   background-color: transparent;
   border-bottom:1px solid rgba(255,255,255,.5);
+  transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+  box-shadow: rgba(2, 8, 20, 0.1) 0px 0.35em 1.175em, rgba(2, 8, 20, 0.08) 0px 0.175em 0.5em;
+}
+
+::placeholder{
+  color: white;
+  opacity: 0.5;
+}
+
+button{
+  padding: 0.5rem;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-style: none;
+  letter-spacing: 1px;
+  color: var(--white);
+  font-weight: bold;
+  font-size: 1.5rem;
+  height: auto;
+  width: auto;
+  border-radius: 15px;
+  background-color: var(--tuscan-red);
   transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
   box-shadow: rgba(2, 8, 20, 0.1) 0px 0.35em 1.175em, rgba(2, 8, 20, 0.08) 0px 0.175em 0.5em;
 
 }
 
 button:hover{
-  background-color: rgb(178, 184, 189);
+  background-color: rgb(75, 27, 0);
 }
 
 button:active{
-  background-color: rgb(117, 122, 126);
+  background-color: rgb(51, 19, 0);
 }
 
 
 
-
-.done{
-  text-decoration: line-through;
+/* CSS for NAV */
+#navFlex{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
-
-.dayTitle{
+#navFlex ul{
+  list-style-type: none;
   display: flex;
-  justify-content: space-between;
-  padding-left: 4rem;
-  padding-right: 4rem;
-}
-
-/* Colours for NAV */
-nav ul{
-  list-style-type: none;
+  justify-content: center;
   margin:0;
   padding:0;
   overflow:hidden;
-  background-color: rgb(46, 46, 46);
-  box-shadow: rgba(3, 8, 20, 0.1) 0px 0.15rem 0.5rem, rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
+  background-color: var(--dark-sienna);
 }
 
-/* Colours for Task List */
-ul{
-  list-style-type: none;
+#navFlex li{
   font-weight: bold;
-  margin:0;
-  padding:0;
-  overflow:hidden;
-  background-color: rgb(165, 165, 165);
-  box-shadow: rgba(3, 8, 20, 0.1) 0px 0.15rem 0.5rem, rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
+  flex-grow: 1;
 }
 
-li{
-  float:left;
-}
-
-li a{
+#navFlex li a{
   display: block;
   color: white;
   text-align: center;
@@ -118,6 +183,67 @@ li a{
   text-decoration: none;
 }
 
-li a:hover{
+#navFlex li a:hover{
   background-color:#1d1d1d;
+}  
+
+
+
+/* CSS for Task List */
+.mainContainer{
+  display:inline-block;
+  background-color: var(--fuzzy-wuzzy);
+  height: 80vh;
+  width: 90%;
+  margin: 5%;
+  padding: 5%;
+  border-radius: 15px;  
 }
+
+.mainChild{
+
+}
+
+.dayTitle{
+  display: flex;
+  justify-content: space-between;
+  height: 5%;
+}
+
+.weekButton{
+  padding: 0px;
+  border-radius: 15px;
+  width: 4rem;
+  height: 2rem;
+}
+
+
+
+.taskList{
+  padding-left: 0;
+  border-radius: 15px;
+}
+
+.taskListEntry{
+  background-color: var(--old-burgundy);
+  font-weight: bold;
+  overflow:hidden;
+  border-radius: 15px;
+  margin: 0.25rem;
+}
+
+.taskListEntryDone{
+  background-color: var(--old-burgundy);
+  font-weight: bold;
+  overflow:hidden;
+  border-radius: 15px;
+  margin: 0.25rem;
+  background-color: var(--dark-sienna);
+}
+
+.done{
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+

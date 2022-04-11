@@ -3,8 +3,8 @@ import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import Login from "../components/Login";
 import Logout from "../components/Logout";
-//import SaveTasks from "../components/SaveTasks.js";
-// import Signup from "../components/Signup(DECIPRICATED)";
+
+
 
 export default function Home() {
   const [dayID, setDayID] = useState(0);
@@ -15,6 +15,8 @@ export default function Home() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  let username = localStorage.getItem('username')
+
   const onNewTaskChange = useCallback((e) => {
     setNewTask(e.target.value)
   },[])
@@ -23,82 +25,75 @@ export default function Home() {
     if(newTask === ""){
       alert("Please input something")
     }else{
-
-    handleClose();
-    e.preventDefault();
-    if (!newTask.trim())return;
-
-    console.log("Form Submitted");
-
-    setTasks([
-      ...tasks,
+      if (!newTask.trim())return;
+      handleClose();
+      e.preventDefault();
+      
+      const newlyCreatedTask = 
       {
-        taskid: tasks.length + 1,
+        taskid: 0,
         dayid: dayID, 
-        userid : localStorage.getItem('userID'),
+        userid : parseInt(localStorage.getItem('userID')),
         content: newTask.trim(),
         done: false
       }
-    ])
 
-    setNewTask('')
+      SaveTask(newlyCreatedTask);
 
-    console.log(tasks);
+      setTasks([...tasks, newlyCreatedTask]);
 
-    SaveTasks()
+      setNewTask('');
   }
+
+ 
   
   },[tasks,newTask,dayID])
 
-  const onTaskChecked = useCallback((task,index) => (e) => {
+  const onTaskChecked = useCallback((task,taskID) => (e) => {
     const newTasks = [...tasks]
-    newTasks.splice(index, 1,{
-      ...task,
-      done: !task.done
-    })
+    task.done = !task.done
+    UpdateTask(task)
     setTasks(newTasks)
   },[tasks])
 
+  
 
-  const removeTask = useCallback((task) => (e) => {
-    setTasks(tasks.filter(otherTask => otherTask !== task))
-  },[tasks])
+  // const removeTask = useCallback((task) => (e) => {
+  //   setTasks(tasks.filter(otherTask => otherTask !== task))
+  // },[tasks])
 
   const handleClick = (e) =>{
     handleShow();
-    setDayID(e.target.id);
+    setDayID(parseInt(e.target.id));
   }
 
-  // useEffect(() => {
-  //   console.log('tasks', tasks);
-  // }, [tasks])
+  const UpdateTask = (task) => {
+    let userToken = "Bearer "
+    userToken = userToken + localStorage.getItem('myLoginToken')
 
-  const addRetrievedTasks = useCallback((results) => {
-    console.log("Retrieved Tasks fire");
-    console.log(results);
-
-    console.log("Before: ",tasks);
-
-    results.forEach(task => {
-      // setTasks([
-      //   ...tasks,
-      console.log(
-        {
-          taskid: task.taskID,
-          userid : task.userID,
-          dayid: task.dayID, 
-          content: task.content,
-          done: task.done
-        });
-      // ])
-    });
-
+    let updateTaskURL = "http://localhost:3001/api/updatetask"
     
+    console.log("Task being updated on server: ",task);
 
-    setNewTask('')
+    const headers = new Headers()
+    headers.append("authorization", `${userToken}`)
+    headers.append("Content-Type", "application/json")
 
-    console.log("After: ",tasks);
-
+    fetch(updateTaskURL, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(task)
+    }).then((res) => {
+      if (res.status === 200){
+        return res.json({Message: "Success"})
+      }else{
+        throw Error(res.statusText)
+      }
+    }).then((data) => {
+      console.log(data);
+    }).catch((err) => {
+      console.log("An error has occured: ", err);
+    })
   }
   
   const RecieveTasks = () =>{
@@ -106,8 +101,7 @@ export default function Home() {
     userToken = userToken + localStorage.getItem('myLoginToken')
     const userID = localStorage.getItem('userID')
 
-    let recieveTaskURL = "http://localhost:3001/api/recievetasks"
-    recieveTaskURL = recieveTaskURL + "?userID=" + userID
+    let recieveTaskURL = "http://localhost:3001/api/recievetasks?userID=" + userID
 
     const headers = new Headers()
     headers.append("authorization", `${userToken}`)
@@ -122,19 +116,26 @@ export default function Home() {
         throw Error(res.statusText)
       }
     }).then((data) => {
-      const results = data.recievedTasks    
-      addRetrievedTasks(results)
+      const results = data
+      console.log("API Results: ",results);
+      setTasks([]);
+      results.forEach(task => {
+        setTasks( tasks => [...tasks, {
+          taskid: task.taskID,
+          dayid: task.dayID, 
+          userid : task.userID,
+          content: task.content,
+          done: task.done
+        }])
+      });
+
     }).catch((err) => {
       console.log("An error has occured: ", err);
     })
     
   }
-  // useEffect(() => {
-  //   RecieveTasks()
-  //   console.log(tasks);
-  // }, []);
 
-  const SaveTasks = () =>{
+  const SaveTask = (taskObj) =>{
     let userToken = "Bearer "
     userToken = userToken + localStorage.getItem('myLoginToken')
 
@@ -147,7 +148,7 @@ export default function Home() {
     fetch(uploadTaskURL, {
       method: 'POST',
       headers: headers,
-      body: JSON.stringify(tasks),
+      body: JSON.stringify(taskObj)
     }).then((res) => {
       if (res.status === 200){
         return res.json({Message: "Success"})
@@ -163,57 +164,15 @@ export default function Home() {
 
   }
 
-  // Button Code for Save Tasks
-  // const SaveTasks = (e) => {
-  //   console.log(tasks);
-  //   e.preventDefault();
+  
 
-  //   let userToken = "Bearer "
-  //   userToken = userToken + localStorage.getItem('myLoginToken')
+  
+  useEffect(() => {
+    RecieveTasks()
+  }, []);
 
-  //   console.log(userToken);
-
-
-  //   // const task = {
-  //   //   userID: localStorage.getItem('userID'),
-  //   //   dayID: 2,
-  //   //   content: "Doing stuff",
-  //   //   done: false
-  //   // }
-
-  //   const uploadTaskURL = "http://localhost:3001/api/addtask"
-  //   const headers = new Headers()
-  //   headers.append("authorization", `${userToken}`)
-  //   headers.append("Content-Type", "application/json")
-
-    
-    
-  //   // const formData = new FormData()
-  //   // formData.append('tasksArray', )
-
-  //   fetch(uploadTaskURL, {
-  //     method: 'POST',
-  //     headers: headers,
-  //     body: JSON.stringify(tasks),
-  //   }).then((res) => {
-  //     if (res.status === 200){
-  //       return res.json({Message: "Success"})
-  //     }else{
-  //       throw Error(res.statusText)
-  //     }
-  //   }).then((data) => {
-  //     console.log(data);
-  //   }).catch((err) => {
-  //     console.log("An error has occured: ", err);
-  //   })
-    
-
-  // }
-
-  let username = localStorage.getItem('username')
   
   if (localStorage.getItem('myLoginToken')){
-    
     return (
       <>
         <Modal show={show} onHide={handleClose}>
@@ -222,125 +181,118 @@ export default function Home() {
             <Modal.Title>Add a task</Modal.Title>
           </Modal.Header>
   
-          <form>
+          
           <Modal.Body>
               <input
                 id="newTask"
                 name="newTask"
                 value={newTask}
                 onChange={onNewTaskChange}
-                className='input-search'
+                className='modal-input-search'
               />
           </Modal.Body>
   
           <Modal.Footer>
   
           <Button variant="secondary" onClick={handleClose}> Close </Button>
-          <Button variant="primary" onClick={formSubmitted}> Submit New Task </Button>
+          <Button variant="secondary" onClick={formSubmitted}> Submit New Task </Button>
   
           </Modal.Footer>
-          </form>
+          
   
         </Modal>
         <header>
-          <h1>Tidy</h1>
-          <h1>Hi {username}</h1>
+          <h1 className="title">Tidy</h1>
+          <h1 className="usersName">Hi {username}</h1>
           <Logout/>
         </header> 
-  
-        <div>
+        
+        <div className="mainContainer">
+        {/* Monday List */}
+        <div className="mainChild">
           <div className="dayTitle">
             <h2>Monday</h2>
-            <Button id = "1" variant="primary" onClick={handleClick}>+</Button>
+            <button id = "1" className="weekButton" onClick={handleClick}>+</button>
           </div>                   
-          <ul>
-            {tasks.filter(task => task.dayid === '1').map((task, index) => (
-              <li key={task.id} className={task.done ? 'doneLI' : 'undoneLI'}>
-                <button onClick={onTaskChecked(task,index)}>Check</button>
-
+          <ul className="taskList">
+            {tasks.filter(task => task.dayid ===  1).map((task) => (
+              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry'} onClick={onTaskChecked(task,task.taskid)} >
                 <span className={task.done ? 'done' : ''}>
                   {task.content}
                 </span>
-                <button onClick={removeTask(task)}>Remove Task</button>
               </li>
             ))}
           </ul>
         </div>
 
         {/* Tuesday List */}
-        <div>
+        <div className="mainChild">
           <div className="dayTitle">
             <h2>Tuesday</h2>
-            <Button id = "2" variant="primary" onClick={handleClick}>+</Button>
+            <button id = "2" className="weekButton" onClick={handleClick}>+</button>
           </div> 
-          <ul>
-            {tasks.filter(task => task.dayid === '2').map((task) => (
-              <li key={task.id} className={task.done ? 'doneLI' : 'undoneLI'}>
-                <span className={task.done ? 'done' : ''}>
-                  {task.content}
-                </span>
-                <button onClick={removeTask(task)}>Remove Task</button>
-              </li>
+          <ul className="taskList">
+          {tasks.filter(task => task.dayid ===  2).map((task) => (
+              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry'} onClick={onTaskChecked(task,task.taskid)}>
+              <span className={task.done ? 'done' : ''} >
+                {task.content}
+              </span>
+            </li>
             ))}
           </ul>
         </div>
 
         {/* Wednesday List */}
-        <div>
+        <div className="mainChild">
           <div className="dayTitle">
             <h2>Wednesday</h2>
-            <Button id = "3" variant="primary" onClick={handleClick}>+</Button>
+            <button id = "3" className="weekButton" onClick={handleClick}>+</button>
           </div>  
-          <ul>
-            {tasks.filter(task => task.dayid === '3').map((task) => (
-              <li key={task.id} className={task.done ? 'doneLI' : 'undoneLI'}>
-                <span className={task.done ? 'done' : ''}>
-                  {task.content}
-                </span>
-                <button onClick={removeTask(task)}>Remove Task</button>
-              </li>
+          <ul className="taskList">
+          {tasks.filter(task => task.dayid ===  3).map((task) => (
+              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry'} onClick={onTaskChecked(task,task.taskid)}>
+              <span className={task.done ? 'done' : ''}>
+                {task.content}
+              </span>
+            </li>
             ))}
           </ul>
         </div>
   
         {/* Thursday List */}
-        <div>
+        <div className="mainChild">
           <div className="dayTitle">
             <h2>Thursday</h2>
-            <Button id = "4" variant="primary" onClick={handleClick}>+</Button>
+            <button id = "4" className="weekButton" onClick={handleClick}>+</button>
           </div>
-          <ul>
-            {tasks.filter(task => task.dayid === '4').map((task) => (
-              <li key={task.id} className={task.done ? 'doneLI' : 'undoneLI'}>
-                <span className={task.done ? 'done' : ''}>
-                  {task.content}
-                </span>
-                <button onClick={removeTask(task)}>Remove Task</button>
-              </li>
+          <ul className="taskList">
+            {tasks.filter(task => task.dayid ===  4).map((task) => (
+              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry'} onClick={onTaskChecked(task,task.taskid)} >
+              <span className={task.done ? 'done' : ''}  >
+                {task.content}
+              </span>
+            </li>
             ))}
           </ul>
         </div>
 
         {/* Friday List */}
-        <div>
+        <div className="mainChild">
           <div className="dayTitle">
             <h2>Friday</h2>
-            <Button id = "5" variant="primary" onClick={handleClick}>+</Button>
+            <button id = "5" className="weekButton" onClick={handleClick}>+</button>
           </div>
-          <ul>
-            {tasks.filter(task => task.dayid === ('5' || 5)).map((task) => (
-              <li key={task.id} className={task.done ? 'doneLI' : 'undoneLI'}>
-                <span className={task.done ? 'done' : ''}>
-                  {task.content}
-                </span>
-                <button onClick={removeTask(task)}>Remove Task</button>
-              </li>
+          <ul className="taskList">
+          {tasks.filter(task => task.dayid ===  5).map((task) => (
+              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry'} onClick={onTaskChecked(task,task.taskid)}>
+              <span className={task.done ? 'done' : ''}>
+                {task.content}
+              </span>
+            </li>
             ))}
           </ul>
-        </div>  
-        <div>
-          <Button onClick={RecieveTasks}>Save</Button>
-        </div>    
+        </div>
+        </div>
       </>
       )
   }else{

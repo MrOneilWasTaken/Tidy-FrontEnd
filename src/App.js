@@ -7,28 +7,51 @@ import Profile from './pages/Profile';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <div className="App">
-        
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="leaderboard" element={<Leaderboard />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+  if (localStorage.getItem('myLoginToken')){
+    return (
+      <BrowserRouter>
+        <div className="App">
           
-          <nav id = "">
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="leaderboard">Leaderboard</Link></li>
-              <li><Link to="profile">Profile</Link></li>
-            </ul>
-          </nav>
-        
-      </div>
-    </BrowserRouter >
-  );
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="leaderboard" element={<Leaderboard />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+            
+            <nav id = "navFlex">
+              <ul>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="leaderboard">Leaderboard</Link></li>
+                <li><Link to="profile">Profile</Link></li>
+              </ul>
+            </nav>
+          
+        </div>
+      </BrowserRouter >
+    )
+  }else{
+    return (
+      <BrowserRouter>
+        <div className="App">
+          
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="leaderboard" element={<Leaderboard />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+            
+            <nav id = "navFlex">
+              <ul>
+                <li><Link to="/">Home</Link></li>
+              </ul>
+            </nav>
+          
+        </div>
+      </BrowserRouter >
+    )
+  }
 }
 
 export default App;
