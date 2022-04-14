@@ -12,6 +12,7 @@ export default function Home() {
   const [newTask, setNewTask] = useState('');
   const [tasks, setTasks] = useState([])
 
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -43,13 +44,15 @@ export default function Home() {
       setTasks([...tasks, newlyCreatedTask]);
 
       setNewTask('');
+
+      RecieveTasks()
   }
 
  
   
   },[tasks,newTask,dayID])
 
-  const onTaskChecked = useCallback((task,taskID) => (e) => {
+  const onTaskChecked = useCallback((task) => (e) => {
     const newTasks = [...tasks]
     task.done = !task.done
     UpdateTask(task)
@@ -116,11 +119,12 @@ export default function Home() {
         throw Error(res.statusText)
       }
     }).then((data) => {
+
       const results = data
       console.log("API Results: ",results);
       setTasks([]);
       results.forEach(task => {
-        setTasks( tasks => [...tasks, {
+        setTasks(tasks => [...tasks, {
           taskid: task.taskID,
           dayid: task.dayID, 
           userid : task.userID,
@@ -128,7 +132,6 @@ export default function Home() {
           done: task.done
         }])
       });
-
     }).catch((err) => {
       console.log("An error has occured: ", err);
     })
@@ -205,7 +208,8 @@ export default function Home() {
           <h1 className="title">Tidy</h1>
           <h1 className="usersName">Hi {username}</h1>
           <Logout/>
-        </header> 
+        </header>   
+        
         
         <div className="mainContainer">
         {/* Monday List */}
@@ -300,11 +304,7 @@ export default function Home() {
       <>
         <h1>Welcome to Tidy</h1>
         <h2>Please log in or create and account</h2>
-        
         <Login/>
-        {/* <Signup/> */}
-        
-        {/* <img src={ require('./images/image1.jpg') } /> */}
       </>
     )
   }

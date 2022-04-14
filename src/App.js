@@ -44,7 +44,6 @@ function App() {
             
             <nav id = "navFlex">
               <ul>
-                <li><Link to="/">Home</Link></li>
               </ul>
             </nav>
           

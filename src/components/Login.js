@@ -84,7 +84,7 @@ export default function Login(){
   }
 
   return(
-    <div className="headerChild">
+    <div className="inputContainer">
       <input
         className="input-search"
         type='text'
@@ -100,8 +100,10 @@ export default function Login(){
         onChange={handlePassword}
       />
       <br></br>
-      <button  onClick={handleLoginClick}>Log in</button>
-      <button onClick={handleSignup}>Sign up</button>
+      <div className="loginlogoutbuttonContainer">
+        <button className="loginlogoutButton" onClick={handleLoginClick}>Log in</button>
+        <button className="loginlogoutButton" onClick={handleSignup}>Sign up</button>
+      </div>
     </div>
   )
 }

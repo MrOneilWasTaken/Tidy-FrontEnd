@@ -3,20 +3,27 @@
   --black: #060505ff;
   --fuzzy-wuzzy: #c7726fff;
   --redwood: #9b5954ff;
-  --old-burgundy: #4b302fff;
+  --old-burgundy: #4b302f;
   --dark-sienna: #220909ff;
 
   --oxford-blue: #0a122aff;
   --maximum-green: #698f3fff;
   --white: #fbfaf8ff;
   --bone: #e7decdff;
-  --tuscan-red: #804e49ff;  
+  --tuscan-red: #804e49;  
 }
 
+span{
+  font-size: 20px;
+}
 @media only screen and (min-width: 600px) {
 
   html{
     font-size: 18px;
+  }
+
+  span{
+    font-size: 40px;
   }
 
 }
@@ -31,7 +38,6 @@ html {
   background-color: var(--old-burgundy);
   color: rgb(88, 90, 92);
   font-weight: bold;
-
 }
 
 
@@ -62,6 +68,26 @@ header{
   width:  5rem;
   height: auto;
   margin-bottom: 0px;
+}
+
+.inputContainer{
+  
+  margin-top: 40%;
+  
+}
+
+.loginlogoutbuttonContainer{
+  margin-top: 10%;
+}
+
+.loginlogoutButton{
+  padding: 0px;
+  border-radius: 15px;
+  width:  5rem;
+  height: auto;
+  margin-bottom: 0px;
+  margin: 10px;
+  
 }
 
 .title{
@@ -187,7 +213,31 @@ button:active{
   background-color:#1d1d1d;
 }  
 
+/* CSS for Leaderboard */
 
+.leaderboardList{
+  display: flex;
+  margin-top: 10%;
+  margin-bottom: 10%;
+}
+
+.leaderboardChild{
+  flex-grow: 1;
+  width: 100%;
+}
+
+.userPosition{
+  float: left;
+}
+
+.leaderboardHeader{
+  display: flex;
+}
+
+.leaderboardHeaderChild{
+  flex-grow: 1;
+  width: 100%;
+}
 
 /* CSS for Task List */
 .mainContainer{
@@ -199,10 +249,6 @@ button:active{
   padding: 5%;
   border-radius: 15px;  
 }
-
-/* .mainChild{
-
-} */
 
 .dayTitle{
   display: flex;

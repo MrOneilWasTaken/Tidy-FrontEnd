@@ -7,5 +7,5 @@
 
 * [] When a new user signs up check that a username isnt taken
 * [] Do the leaderboard page
-  * [] Create the endpoint
+  * [x] Create the endpoint
   * [] Create the display on the front end
