@@ -39,11 +39,23 @@ export default function Leaderboard() {
     })
   }
 
+
+
+  const positionCheck = (index) => {
+    if (index === 0){
+      return "taskListEntry leaderboardList first"
+    }else if (index === 1){
+      return "taskListEntry leaderboardList second"
+    }else if (index === 2){
+      return "taskListEntry leaderboardList third"
+    }else{
+      return "taskListEntry leaderboardList bottom"
+    }
+  }
+
   useEffect(() => {
     callLeaderboard()
   }, []);
-
-  
 
   return (
     <>
@@ -59,8 +71,8 @@ export default function Leaderboard() {
         </div>
         <ul className="taskList"> 
           {leaderboard.map((user, index) => (
-            <li key={index} className="taskListEntry leaderboardList">
-              <span className="leaderboardChild userPosition">{index+1}</span>
+            <li key={index} className={positionCheck(index)}>
+              <span className="leaderboardChild userPosition"> {index+1}</span>
               <span className="leaderboardChild userName">{user.username}</span>
               <span className="leaderboardChild userTasksCompleted">{user.tasksCompleted}</span>
             </li>

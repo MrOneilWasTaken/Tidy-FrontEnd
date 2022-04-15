@@ -120,8 +120,9 @@ export default function Home() {
       }
     }).then((data) => {
 
-      const results = data
+      const results = data.Tasks
       console.log("API Results: ",results);
+      
       setTasks([]);
       results.forEach(task => {
         setTasks(tasks => [...tasks, {
@@ -167,11 +168,41 @@ export default function Home() {
 
   }
 
-  
+  const checkAchievementStatus = () => {
+    let userToken = "Bearer "
+    userToken = userToken + localStorage.getItem('myLoginToken')
+
+    const fetchBody = {
+      userID: localStorage.getItem('userID')
+    }
+
+    const addAchievementURL = "http://localhost:3001/api/addachievement"
+
+    const headers = new Headers()
+    headers.append("authorization", `${userToken}`)
+    headers.append("Content-Type", "application/json")
+
+    fetch(addAchievementURL, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(fetchBody)
+    }).then((res) => {
+      if (res.status === 200){
+        return res.json({Message: "Success"})
+      }else{
+        throw Error(res.statusText)
+      }
+    }).then((data) => {
+      console.log(data);
+    }).catch((err) => {
+      console.log("An error has occured: ", err);
+    })
+  }
 
   
   useEffect(() => {
     RecieveTasks()
+    checkAchievementStatus()
   }, []);
 
   

@@ -1,16 +1,18 @@
 /* CSS HEX */
 :root{
   --black: #060505ff;
-  --fuzzy-wuzzy: #c7726fff;
+  --fuzzy-wuzzy: #c7726f;
   --redwood: #9b5954ff;
   --old-burgundy: #4b302f;
-  --dark-sienna: #220909ff;
+  --dark-sienna: #220909;
 
   --oxford-blue: #0a122aff;
   --maximum-green: #698f3fff;
   --white: #fbfaf8ff;
   --bone: #e7decdff;
   --tuscan-red: #804e49;  
+
+  
 }
 
 span{
@@ -227,7 +229,18 @@ button:active{
 }
 
 .userPosition{
-  float: left;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
+.userTasksCompleted{
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
+.userName{
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
 }
 
 .leaderboardHeader{
@@ -237,6 +250,22 @@ button:active{
 .leaderboardHeaderChild{
   flex-grow: 1;
   width: 100%;
+}
+
+.first{
+  background-color: gold;
+}
+
+.second{
+  background-color: silver;
+}
+
+.third{
+  background-color: rgb(75, 27, 0);
+}
+
+.bottom{
+  background-color: var(--old-burgundy)
 }
 
 /* CSS for Task List */
@@ -271,7 +300,6 @@ button:active{
 }
 
 .taskListEntry{
-  background-color: var(--old-burgundy);
   font-weight: bold;
   overflow:hidden;
   border-radius: 15px;
@@ -293,3 +321,12 @@ button:active{
 }
 
 
+.profileContainer{
+  display:inline-block;
+  background-color: var(--fuzzy-wuzzy);
+  
+  width: 90%;
+  margin: 5%;
+  padding: 5%;
+  border-radius: 15px;  
+}
