@@ -2,9 +2,6 @@ import { useState, useCallback, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import Login from "../components/Login";
-import Logout from "../components/Logout";
-
-
 
 export default function Home() {
   const [dayID, setDayID] = useState(0);
@@ -38,16 +35,25 @@ export default function Home() {
         content: newTask.trim(),
         done: false
       }
+      
+      setTasks([...tasks, newlyCreatedTask]);
+      setNewTask('');
+      
+      
+
+
+      // async function saveAndRecieve(){
+      //   const response = await SaveTask(newlyCreatedTask);
+      //   const 
+      // }
+
+
 
       SaveTask(newlyCreatedTask);
-
-      setTasks([...tasks, newlyCreatedTask]);
-
-      setNewTask('');
-
       RecieveTasks()
-  }
 
+
+    }
  
   
   },[tasks,newTask,dayID])
@@ -154,7 +160,7 @@ export default function Home() {
       headers: headers,
       body: JSON.stringify(taskObj)
     }).then((res) => {
-      if (res.status === 200){
+      if (res.status === 201){
         return res.json({Message: "Success"})
       }else{
         throw Error(res.statusText)
@@ -162,7 +168,7 @@ export default function Home() {
     }).then((data) => {
       console.log(data);
     }).catch((err) => {
-      console.log("An error has occured: ", err);
+      console.log("An error has occured: ", err, " End of error");
     })
     
 
@@ -237,8 +243,7 @@ export default function Home() {
         </Modal>
         <header>
           <h1 className="title">Tidy</h1>
-          <h1 className="usersName">Hi {username}</h1>
-          <Logout/>
+          <h1 className="usersName">Hi, {username}</h1>
         </header>   
         
         
@@ -251,7 +256,7 @@ export default function Home() {
           </div>                   
           <ul className="taskList">
             {tasks.filter(task => task.dayid ===  1).map((task) => (
-              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry'} onClick={onTaskChecked(task,task.taskid)} >
+              <li key={task.taskid} className={task.done ? 'taskListEntryDone '  : 'taskListEntry taskListEntryHome'} onClick={onTaskChecked(task,task.taskid)} >
                 <span className={task.done ? 'done' : ''}>
                   {task.content}
                 </span>
@@ -268,7 +273,7 @@ export default function Home() {
           </div> 
           <ul className="taskList">
           {tasks.filter(task => task.dayid ===  2).map((task) => (
-              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry'} onClick={onTaskChecked(task,task.taskid)}>
+              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry taskListEntryHome'} onClick={onTaskChecked(task,task.taskid)}>
               <span className={task.done ? 'done' : ''} >
                 {task.content}
               </span>
@@ -285,7 +290,7 @@ export default function Home() {
           </div>  
           <ul className="taskList">
           {tasks.filter(task => task.dayid ===  3).map((task) => (
-              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry'} onClick={onTaskChecked(task,task.taskid)}>
+              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry taskListEntryHome'} onClick={onTaskChecked(task,task.taskid)}>
               <span className={task.done ? 'done' : ''}>
                 {task.content}
               </span>
@@ -302,7 +307,7 @@ export default function Home() {
           </div>
           <ul className="taskList">
             {tasks.filter(task => task.dayid ===  4).map((task) => (
-              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry'} onClick={onTaskChecked(task,task.taskid)} >
+              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry taskListEntryHome'} onClick={onTaskChecked(task,task.taskid)} >
               <span className={task.done ? 'done' : ''}  >
                 {task.content}
               </span>
@@ -319,7 +324,7 @@ export default function Home() {
           </div>
           <ul className="taskList">
           {tasks.filter(task => task.dayid ===  5).map((task) => (
-              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry'} onClick={onTaskChecked(task,task.taskid)}>
+              <li key={task.taskid} className={task.done ? 'taskListEntryDone' : 'taskListEntry taskListEntryHome'} onClick={onTaskChecked(task,task.taskid)}>
               <span className={task.done ? 'done' : ''}>
                 {task.content}
               </span>

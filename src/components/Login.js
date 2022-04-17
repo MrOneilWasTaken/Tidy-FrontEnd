@@ -29,17 +29,17 @@ export default function Login(){
       if (res.status === 200){
         return res.json()
       }else{
+        alert("Invalid username or password")
         throw Error(res.statusText)
       }
     }).then((data) => {
-      console.log(data);
-
       if ("token" in data){
         localStorage.setItem('myLoginToken', data.token)
         localStorage.setItem('userID', data.userID)
         localStorage.setItem('username', data.username)
       }
       window.location.reload(false);
+      
 
     }).catch((err) => {
       console.log("An error has occured: ", err);
@@ -49,7 +49,7 @@ export default function Login(){
 
   const handleSignup = () =>{
     
-    let signupURL = "http://localhost:3001/api/signup"
+    const signupURL = "http://localhost:3001/api/signup"
 
     let formData = new FormData()
     formData.append('username', username)
@@ -67,8 +67,6 @@ export default function Login(){
         throw Error(res.statusText)
       }
     }).then((data) => {
-      console.log(data);
-
       if ("token" in data){
         localStorage.setItem('myLoginToken', data.token)
         localStorage.setItem('userID', data.userID)
@@ -79,8 +77,6 @@ export default function Login(){
     }).catch((err) => {
       console.log("An error has occured: ", err);
     })
-    
-    //call log in api
   }
 
   return(

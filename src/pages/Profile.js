@@ -6,7 +6,41 @@ export default function Profile() {
 
   const [achievements, setAchievements] = useState([]);
   const [username, setUsername] = useState("");
+  const [completedTasks, setCompletedTasks] = useState(0);
+  const [favouriteDay, setFavouriteDay] = useState(0);
   
+  const calcTopDay = (tasks) => {
+
+    let dayCount = {
+      Monday: 0,
+      Tuesday: 0,
+      Wednesday: 0,
+      Thursday: 0,
+      Friday: 0,
+    }
+
+    tasks.forEach(task => {
+      if (task.dayID === 1){
+        dayCount.Monday += 1
+      }
+      if (task.dayID === 2){
+        dayCount.Tuesday += 1
+      }
+      if (task.dayID === 3){
+        dayCount.Wednesday += 1
+      }
+      if (task.dayID === 4){
+        dayCount.Thursday += 1
+      }
+      if (task.dayID === 5){
+        dayCount.Friday += 1
+      }
+    });
+
+     
+
+    return Object.keys(dayCount).reduce((a, b) => dayCount[a] > dayCount[b] ? a : b); 
+  }
 
   const fetchProfileData = () => {
     let userToken = "Bearer "
@@ -30,6 +64,9 @@ export default function Profile() {
     }).then((data) => {
       console.log(data);
       setUsername(data.Username)
+      setCompletedTasks(data.UsersCompletedTasks)
+      setFavouriteDay(calcTopDay(data.UsersTasks))
+      
 
     }).catch((err) => {
       console.log("An error has occured: ", err);
@@ -75,7 +112,7 @@ export default function Profile() {
   useEffect(() => {
     fetchProfileData()
     fetchAchievementData()
-  }, []);
+  },[]);
 
 
 
@@ -88,11 +125,12 @@ export default function Profile() {
       
       <div className="profileContainer">
         <div className="profileHeader">
-          <span className="leaderboardHeaderChild">Profile Information</span>
+          <span className="profileHeaderChild">Profile Information</span>
         </div>
         <div className="profileBody">
           <span className="profileBodyChild">Username: {username}</span>
-          <span className="profileBodyChild"></span>
+          <span className="profileBodyChild">Tasks Completed: {completedTasks}</span>
+          <span className="profileBodyChild">Favourite Day: {favouriteDay}</span>
         </div>
         <Logout />
       </div>
@@ -105,11 +143,9 @@ export default function Profile() {
           <ul className="achievementBodyChild">
           {achievements.map((achievement) => (
               <li key={achievement.achievementid}>
-                <span>{achievement.achievement_desc}</span>
+                <span>{achievement.achievement_desc}✔️</span>
               </li>
             ))}
-
-
           </ul>
         </div>
       </div>
