@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import Logout from "../components/Logout";
 
 
 export default function Profile() {
+  let navigate = useNavigate();
 
   const [achievements, setAchievements] = useState([]);
   const [username, setUsername] = useState("");
@@ -42,6 +44,7 @@ export default function Profile() {
     return Object.keys(dayCount).reduce((a, b) => dayCount[a] > dayCount[b] ? a : b); 
   }
 
+  // Fetching from userstasks API endpoint
   const fetchProfileData = () => {
     let userToken = "Bearer "
     userToken = userToken + localStorage.getItem('myLoginToken')
@@ -73,6 +76,7 @@ export default function Profile() {
     })
   }
 
+  // Fetching from achievements API endpoint
   const fetchAchievementData = () => {
 
     let userToken = "Bearer "
@@ -114,41 +118,55 @@ export default function Profile() {
     fetchAchievementData()
   },[]);
 
+  const toHome = () => {
+    navigate("/");
+  }
 
 
-  return (
-    <>
+  if (localStorage.getItem('myLoginToken')){
+    return (
+      <>
+        <header>
+          <h1 className="title">Profile</h1>
+        </header>
+  
+        
+        <div className="profileContainer">
+          <div className="profileHeader">
+            <span className="profileHeaderChild">Profile Information</span>
+          </div>
+          <div className="profileBody">
+            <span className="profileBodyChild">Username: {username}</span>
+            <span className="profileBodyChild">Tasks Completed: {completedTasks}</span>
+            <span className="profileBodyChild">Favourite Day: {favouriteDay}</span>
+          </div>
+          <Logout />
+        </div>
+  
+        <div className="profileContainer">
+          <div className="achievementHeader">
+            <span className="achievementHeaderChild">Achievements Attained</span>
+          </div>
+          <div className="achievementBody">
+            <ul className="achievementBodyChild">
+            {achievements.map((achievement) => (
+                <li key={achievement.achievementid}>
+                  <span>{achievement.achievement_desc}✔️</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </>
+      )
+  }else{
+    
+    return(
+      <>
       <header>
-        <h1 className="title">Profile</h1>
+        <h1 className="title" onClick={toHome}>Return to Home</h1>
       </header>
-
-      
-      <div className="profileContainer">
-        <div className="profileHeader">
-          <span className="profileHeaderChild">Profile Information</span>
-        </div>
-        <div className="profileBody">
-          <span className="profileBodyChild">Username: {username}</span>
-          <span className="profileBodyChild">Tasks Completed: {completedTasks}</span>
-          <span className="profileBodyChild">Favourite Day: {favouriteDay}</span>
-        </div>
-        <Logout />
-      </div>
-
-      <div className="profileContainer">
-        <div className="achievementHeader">
-          <span className="achievementHeaderChild">Achievements Attained</span>
-        </div>
-        <div className="achievementBody">
-          <ul className="achievementBodyChild">
-          {achievements.map((achievement) => (
-              <li key={achievement.achievementid}>
-                <span>{achievement.achievement_desc}✔️</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </>
+      </>
     )
+  }
 }

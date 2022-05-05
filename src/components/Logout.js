@@ -8,8 +8,6 @@ export default function Logout(){
     localStorage.removeItem('userID')
     localStorage.removeItem('username')
     
-    // window.location.reload(false);
-    // Redirect()
     navigate("/");
   }
 

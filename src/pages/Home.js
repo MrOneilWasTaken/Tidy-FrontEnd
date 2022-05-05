@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
-import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
-import Login from "../components/Login";
+import Login from "../components/UserAuth";
 
 export default function Home() {
   const [dayID, setDayID] = useState(0);
@@ -35,24 +34,14 @@ export default function Home() {
         content: newTask.trim(),
         done: false
       }
-      
-      setTasks([...tasks, newlyCreatedTask]);
-      setNewTask('');
-      
-      
+    
+      const taskReset = async () => {
+        await SaveTask(newlyCreatedTask);
+        RecieveTasks()
+      }
 
-
-      // async function saveAndRecieve(){
-      //   const response = await SaveTask(newlyCreatedTask);
-      //   const 
-      // }
-
-
-
-      SaveTask(newlyCreatedTask);
-      RecieveTasks()
-
-
+      setNewTask('')
+      taskReset()
     }
  
   
@@ -65,12 +54,7 @@ export default function Home() {
     setTasks(newTasks)
   },[tasks])
 
-  
-
-  // const removeTask = useCallback((task) => (e) => {
-  //   setTasks(tasks.filter(otherTask => otherTask !== task))
-  // },[tasks])
-
+  // Set the day ID
   const handleClick = (e) =>{
     handleShow();
     setDayID(parseInt(e.target.id));
@@ -105,12 +89,13 @@ export default function Home() {
     })
   }
   
+  // Retrieve the tasks from the DB
   const RecieveTasks = () =>{
     let userToken = "Bearer "
     userToken = userToken + localStorage.getItem('myLoginToken')
     const userID = localStorage.getItem('userID')
 
-    let recieveTaskURL = "http://localhost:3001/api/recievetasks?userID=" + userID
+    let recieveTaskURL = "http://localhost:3001/api/receivetasks?userID=" + userID
 
     const headers = new Headers()
     headers.append("authorization", `${userToken}`)
@@ -193,7 +178,9 @@ export default function Home() {
       headers: headers,
       body: JSON.stringify(fetchBody)
     }).then((res) => {
-      if (res.status === 200){
+      if (res.status === 201){
+        return res.json({Message: "Success"})
+      }else if (res.status === 200){
         return res.json({Message: "Success"})
       }else{
         throw Error(res.statusText)
@@ -204,7 +191,6 @@ export default function Home() {
       console.log("An error has occured: ", err);
     })
   }
-
   
   useEffect(() => {
     RecieveTasks()
@@ -234,8 +220,8 @@ export default function Home() {
   
           <Modal.Footer>
   
-          <Button variant="secondary" onClick={handleClose}> Close </Button>
-          <Button variant="secondary" onClick={formSubmitted}> Submit New Task </Button>
+          <button variant="secondary" onClick={handleClose}> Close </button>
+          <button variant="secondary" onClick={formSubmitted}> Submit New Task </button>
   
           </Modal.Footer>
           
@@ -245,7 +231,6 @@ export default function Home() {
           <h1 className="title">Tidy</h1>
           <h1 className="usersName">Hi, {username}</h1>
         </header>   
-        
         
         <div className="mainContainer">
         {/* Monday List */}
@@ -339,7 +324,7 @@ export default function Home() {
     return(
       <>
         <h1>Welcome to Tidy</h1>
-        <h2>Please log in or create and account</h2>
+        <h2>Please log in or create an account</h2>
         <Login/>
       </>
     )

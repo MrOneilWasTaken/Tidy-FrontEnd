@@ -39,12 +39,9 @@ export default function Login(){
         localStorage.setItem('username', data.username)
       }
       window.location.reload(false);
-      
-
     }).catch((err) => {
       console.log("An error has occured: ", err);
     })
-
   }
 
   const handleSignup = () =>{
@@ -64,6 +61,7 @@ export default function Login(){
       if (res.status === 200){
         return res.json()
       }else{
+        alert("Invalid username or password")
         throw Error(res.statusText)
       }
     }).then((data) => {

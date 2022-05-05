@@ -65,16 +65,17 @@ header{
 }
 
 .logoutButton{
-  padding: 0px;
+  padding: 10px;
   border-radius: 15px;
   width:  5rem;
   height: auto;
+  margin-top: 10px;
   margin-bottom: 0px;
 }
 
 .inputContainer{
   
-  margin-top: 40%;
+  margin-top: 10%;
   
 }
 
@@ -250,6 +251,7 @@ button:active{
 .leaderboardHeaderChild{
   flex-grow: 1;
   width: 100%;
+  font-weight: bold;
 }
 
 .first{
@@ -274,9 +276,11 @@ button:active{
   display:inline-block;
   background-color: var(--fuzzy-wuzzy);
   width: 90%;
-  margin: 5%;
+  margin: 2%;
   padding: 5%;
   border-radius: 15px;  
+  padding-bottom: 2%;
+  padding-top: 2%;
 }
 
 .profileHeader{
@@ -290,14 +294,21 @@ button:active{
 
 .profileBody{
   display: flex;
+  flex-direction: column;
 }
 
 .profileBodyChild{
-
+  flex-grow: 1;
+  width: 100%;
+  font-weight: bold;
+  overflow:hidden;
+  border-radius: 15px;
+  margin: 0.25rem;
+  background-color: var(--old-burgundy)
 }
 
 
-.achievementHeader{
+/* .achievementHeader{
 
 }
 
@@ -307,7 +318,7 @@ button:active{
 
 .achievementBody{
 
-}
+} */
 
 .achievementBodyChild{
   list-style-type: none;
@@ -328,6 +339,7 @@ button:active{
   margin: 5%;
   padding: 5%;
   border-radius: 15px;  
+  overflow: hidden;
 }
 
 .dayTitle{

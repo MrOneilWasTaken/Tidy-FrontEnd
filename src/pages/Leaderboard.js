@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Leaderboard() {
+  let navigate = useNavigate();
   const [leaderboard, setLeaderboard] = useState([]);
 
   const callLeaderboard = () =>{
@@ -57,6 +59,11 @@ export default function Leaderboard() {
     callLeaderboard()
   }, []);
 
+  const toHome = () => {
+    navigate("/");
+  }
+
+  if (localStorage.getItem('myLoginToken')){
   return (
     <>
       <header>
@@ -81,4 +88,13 @@ export default function Leaderboard() {
       </div>
     </>
     )
+  }else{
+    return(
+      <>
+      <header>
+        <h1 className="title" onClick={toHome}>Return to Home</h1>
+      </header>
+      </>
+    )
+  }
 }
